@@ -1,0 +1,7 @@
+node_modules
+package-lock.json
+
+// all .zip files
+*.zip
+.env
+index.js
