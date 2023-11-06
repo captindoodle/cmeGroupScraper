@@ -34,6 +34,9 @@ const runScraping = async () => {
   // Set a random User-Agent for this request
   await page.setUserAgent(getRandomUserAgent());
 
+  // Disable cache
+  await page.setCacheEnabled(false);
+
   // Disable unnecessary requests
   await page.setRequestInterception(true);
   page.on("request", (request) => {
