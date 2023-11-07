@@ -34,8 +34,9 @@ const runScraping = async () => {
   // Set a random User-Agent for this request
   await page.setUserAgent(getRandomUserAgent());
 
-  // Disable cache
-  await page.setCacheEnabled(false);
+
+    // Disable cache
+    await page.setCacheEnabled(false);
 
   // Disable unnecessary requests
   await page.setRequestInterception(true);
@@ -90,7 +91,9 @@ const runScraping = async () => {
         ] = data;
 
         // Extract the "UNIQUE CODE" from the "month" field
-        const uniqueCodeMatch = month.match(/([A-Z0-9]{4})$/); // match the last four characters of the string
+        // const uniqueCodeMatch = month.match(/([A-Z0-9]{4})$/); // match the last four characters of the string
+        // const uniqueCodeMatch = month.match(/([A-Z0-9]{4,})$/);
+        const uniqueCodeMatch = month.match(/\d{4}([A-Z0-9]+)/);
         const uniqueCode = uniqueCodeMatch ? uniqueCodeMatch[1] : "";
 
         // Extract the "MONTH" field in the format "MON YYYY"
@@ -117,7 +120,14 @@ const runScraping = async () => {
   }
 
   // Convert data to CSV format
-  const csv = papa.unparse(resultData);
+  // const csv = papa.unparse(resultData);
+
+  // Remove duplicates from resultData
+  const uniqueResultData = Array.from(new Set(resultData.map(JSON.stringify))).map(JSON.parse);
+
+  // Convert data to CSV format
+  const csv = papa.unparse(uniqueResultData);
+
 
   // Get the current date and time, Hrs Mm
   // const now = moment().format("YYYY-MM-DD_HH-mm");
@@ -143,7 +153,7 @@ async function sendEmailWithCSV(csvFilePath) {
 
   let info = await transporter.sendMail({
     from: `"cmeGroupBot" <${"captindoodle@gmail.com"}>`,
-    to: "captindoodle@gmail.com",
+    to: "brandon.acuff@mavresources.com",
     subject: "Scraped Data",
     text: "Here is the scraped data.",
     attachments: [
