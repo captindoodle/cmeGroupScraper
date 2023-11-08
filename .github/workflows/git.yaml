@@ -2,7 +2,7 @@ name: Node.js cmeGroup Scraper
 
 on:
   schedule:
-    - cron: "50 14 * * *" # This line runs the workflow every day at 8:50 AM CST
+    - cron: "40 13 * * *" # This line runs the workflow every day at 8:40 AM CST
 
 jobs:
   build:
